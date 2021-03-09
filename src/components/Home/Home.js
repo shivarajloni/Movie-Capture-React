@@ -61,13 +61,10 @@ class Home extends Component {
     this.fetchItems(endpoint);
   }
 
-  fetchItems = (endpoint) => {
-    // ES6 Destructuring the state
-    const { movies, heroImage, searchTerm } = this.state;
-
-    fetch(endpoint)
-    .then(result => result.json())
-    .then(result => {
+    fetchItems = async endpoint => {
+      const { movies, heroImage, searchTerm } = this.state;
+      const result = await (await fetch(fetch)).json();
+      try {
       this.setState({
         movies: [...movies, ...result.results],
         heroImage: heroImage || result.results[0],
@@ -79,9 +76,33 @@ class Home extends Component {
         if (searchTerm === "") {
           sessionStorage.setItem('HomeState', JSON.stringify(this.state));
         }
-      })
+      }
+      );
+    } 
+    catch (e) {}
+  }
+
+  fetchItems = (endpoint) => {
+    // ES6 Destructuring the state
+    const { movies, heroImage, searchTerm } = this.state;
+
+    fetch(endpoint)
+    .then(result => result.json())
+    .then(result => {
+      // this.setState({
+      //   movies: [...movies, ...result.results],
+      //   heroImage: heroImage || result.results[0],
+      //   loading: false,
+      //   currentPage: result.page,
+      //   totalPages: result.total_pages
+      // }, () => {
+      //   // Remember state for the next mount if we´re not in a search view
+      //   if (searchTerm === "") {
+      //     sessionStorage.setItem('HomeState', JSON.stringify(this.state));
+      //   }
+      // })
     })
-    .catch(error => console.error('Error:', error))
+    // .catch(error => console.error('Error:', error))
   }
 
   render() {
